@@ -1,2 +1,3 @@
-# 314-A3-LFK
-graphic about textures.
+# Assignment 3
+
+A3 code for students.
