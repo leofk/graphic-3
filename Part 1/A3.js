@@ -40,7 +40,6 @@ const ticks = { type: "f", value: 0.0 };
 
 const sphereLight = new THREE.PointLight(0xffffff, 1, 300);
 
-
 // Shader materials
 const sphereMaterial = new THREE.ShaderMaterial({
   uniforms: {
@@ -48,8 +47,9 @@ const sphereMaterial = new THREE.ShaderMaterial({
   }
 });
 
-const floorMaterial = new THREE.ShaderMaterial({ 
+const floorMaterial = new THREE.ShaderMaterial({
   uniforms: {
+    // ?
   }
 });
 

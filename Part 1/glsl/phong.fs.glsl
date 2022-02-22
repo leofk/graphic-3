@@ -21,18 +21,20 @@ in vec3 worldPosition;
 
 
 vec3 calculateAmbient(){
-    return vec3(1.0);
+    return ambientColor * kAmbient;
 }
 
 vec3 calculateDiffuse(vec3 normal, vec3 lightDirection){
-    return vec3(1.0);
+    return diffuseColor * kDiffuse * max(0.0, dot(normal, lightDirection));
 }
 
 
 vec3 calculateSpecular(vec3 normal, vec3 lightDirection){
     // HINT: Make sure to use the Jim Blinn's modification to the Phong Model (Blinn-Phong reflectance)
     // See textbook, Section 14.3
-    return vec3(1.0);
+    vec3 halfway = normalize(lightDirection + viewPosition);
+    float specular = pow(max(0.0, dot(halfway, normal)), shininess);
+    return specularColor * kSpecular * specular;
 }
 
 void main() {
@@ -48,7 +50,7 @@ void main() {
     vec3 out_Diffuse = calculateDiffuse(normal, lightDirection);
     vec3 out_Specular = calculateSpecular(normal, lightDirection);
 
-    vec3 out_Color = vec3(1.0);
+    vec3 out_Color = out_Ambient + out_Diffuse + out_Specular;
 
     gl_FragColor = vec4(clamp(out_Color, 0.0, 1.0), 1.0);
 }

@@ -1,9 +1,12 @@
 // Textures are passed in as uniforms
 uniform sampler2D colorMap;
 
+//uniform ? floorColorTexture;
+//uniform ? floorNormalTexture;
+
 in vec2 texCoord;
 
 void main() {
 
-    gl_FragColor = vec4(vec3(0.0), 1.0);
+    gl_FragColor = texture2D(colorMap, texCoord);
 }
