@@ -22,9 +22,16 @@ void main() {
 
     // HINT: Use the surface normal in VCS and the eye direction to determine
     // if the current vertex lies on the silhouette edge of the model, i.e. calculate the fresnel value
-    vec3 viewDirection;                           // Point at camera/eye
-    vec3 viewNormal;                              // HINT: Needs to be in VCS
-    
+
+    // cameraPosition = camera position in world space
+    // Point at camera/eye
+    vec3 viewDirection = normalize(vec3(viewMatrix * vec4(cameraPosition, 1.0)) - viewPosition);
+
+    // HINT: Needs to be in VCS
+    vec3 viewNormal = interpolatedNormal;
+
+    // ref: https://docs.unrealengine.com/4.27/en-US/RenderingAndGraphics/Materials/HowTo/Fresnel/
+    fresnel = dot(viewDirection, viewNormal);
 
     // Multiply each vertex by the model matrix to get the world position of each vertex, 
     // then the view matrix to get the position in the camera coordinate system, 

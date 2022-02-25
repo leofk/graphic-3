@@ -135,7 +135,7 @@ const shaders = {
   SQUARES: { key: 2, material: squaresMaterial }
 };
 
-let mode = shaders.PHONG.key; // Default
+let mode = shaders.TOON.key; // Default
 
 // Set up scenes
 let scenes = [];

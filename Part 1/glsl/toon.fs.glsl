@@ -14,23 +14,29 @@ in float fresnel;
 void main() {
     // HINT: Compute the light intensity the current fragment by determining
     // the cosine angle between the surface normal and the light vector
-    float intensity = 1.0;
+    float intensity = dot(interpolatedNormal, lightDirection);
 
     // HINT: Define ranges of light intensity values to shade. GLSL has a
     // built-in `ceil` function that you could use to determine the nearest
     // light intensity range.
-    
+
+    if (intensity > 0.66) intensity = 0.0;
+    else if (intensity > 0.33) intensity = 0.5;
+    else intensity = 1.0;
+
     // HINT: You should use two tones of colors here; `toonColor` is a cyan
     // color for brighter areas and `toonColor2` is a blue for darker areas.
     // Use the light intensity to blend the two colors, there should be 3 distinct
-    // colour regions 
-    vec3 out_Toon = mix(toonColor, toonColor2, 1.0 - intensity);
+    // colour regions
+
+    vec3 out_Toon = mix(toonColor, toonColor2, intensity);
 
     // HINT: To achieve the toon silhouette outline, set a dark fragment color
     // if the current fragment is located near the edge of the 3D model.
     // Use a reasonable value as the threshold for the silhouette thickness
     // (i.e. proximity to edge).
 
+    if (fresnel < 0.35) out_Toon = outlineColor;
 
     gl_FragColor = vec4(out_Toon, 1.0);
 }
