@@ -21,6 +21,8 @@ floorNormalTexture.minFilter = THREE.LinearFilter;
 floorNormalTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 // Uniforms - Pass these into the appropriate vertex and fragment shader files
+const colorMap = { type: 'sampler2D', value: floorColorTexture };
+
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
 const tangentDirection = { type: 'v3', value: new THREE.Vector3(0.5, 0.0, 1.0) };
 
@@ -49,7 +51,7 @@ const sphereMaterial = new THREE.ShaderMaterial({
 
 const floorMaterial = new THREE.ShaderMaterial({
   uniforms: {
-    // ?
+    colorMap: colorMap,
   }
 });
 
@@ -135,7 +137,7 @@ const shaders = {
   SQUARES: { key: 2, material: squaresMaterial }
 };
 
-let mode = shaders.TOON.key; // Default
+let mode = shaders.SQUARES.key; // Default
 
 // Set up scenes
 let scenes = [];
