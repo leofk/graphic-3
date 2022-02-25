@@ -1,5 +1,4 @@
 // HINT: Don't forget to define the uniforms here after you pass them in in A3.js
-
 uniform vec3 toonColor;
 uniform vec3 toonColor2;
 uniform vec3 outlineColor;

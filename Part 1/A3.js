@@ -22,6 +22,8 @@ floorNormalTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 // Uniforms - Pass these into the appropriate vertex and fragment shader files
 const colorMap = { type: 'sampler2D', value: floorColorTexture };
+const gradColor = { type: 'c', value: new THREE.Color(0xff70ff) };
+const gradColor2 = { type: 'c', value: new THREE.Color(0xFFCB37) };
 
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
 const tangentDirection = { type: 'v3', value: new THREE.Vector3(0.5, 0.0, 1.0) };
@@ -95,7 +97,9 @@ const toonMaterial = new THREE.ShaderMaterial({
 const squaresMaterial = new THREE.ShaderMaterial({
   uniforms: {
     spherePosition: spherePosition,
-    ticks: ticks
+    ticks: ticks,
+    gradColor: gradColor,
+    gradColor2: gradColor2,
   }
 });
 
