@@ -38,10 +38,8 @@ vec3 calculateSpecular(vec3 normal, vec3 lightDirection){
 }
 
 void main() {
-    
 
     vec3 normal = normalize(mat3(transpose(inverse(modelMatrix))) * interpolatedNormal);
-
 
     vec3 lightDirection = normalize(spherePosition - worldPosition);
 

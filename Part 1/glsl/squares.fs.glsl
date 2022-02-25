@@ -15,10 +15,6 @@ void main() {
     // the cosine angle between the surface normal and the light vector.
     float intensity = dot(interpolatedNormal, lightDirection);
 
-//    if (intensity > 0.66) intensity = 0.0;
-//    else if (intensity > 0.33) intensity = 0.5;
-//    else intensity = 1.0;
-
     int divisor = 8;
     int gridPosX = int(vertexPosition.x * 100.0) % divisor;
     int gridPosY = int((vertexPosition.y + ticks / 15.0) * 100.0) % divisor;
