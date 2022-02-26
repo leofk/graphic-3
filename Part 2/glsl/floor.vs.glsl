@@ -1,8 +1,5 @@
 out vec2 texCoord;
 
-//uniform ? floorColorTexture;
-//uniform ? floorNormalTexture;
-
 void main() {
     // HINT: pass texture coords to fragment shader
     texCoord = uv;

@@ -21,16 +21,18 @@ floorNormalTexture.minFilter = THREE.LinearFilter;
 floorNormalTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 // Uniforms - Pass these into the appropriate vertex and fragment shader files
-const colorMap = { type: 'sampler2D', value: floorColorTexture };
+const colorMap = { type: 't', value: floorColorTexture };
+const normalMap = { type: 't', value: floorNormalTexture };
+
 const gradColor = { type: 'c', value: new THREE.Color(0xff70ff) };
 const gradColor2 = { type: 'c', value: new THREE.Color(0xFFCB37) };
 
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
 const tangentDirection = { type: 'v3', value: new THREE.Vector3(0.5, 0.0, 1.0) };
 
-const ambientColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
-const diffuseColor = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
-const specularColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
+const ambientColor = { type: 'c', value: new THREE.Color(0x575657) };
+const diffuseColor = { type: 'c', value: new THREE.Color(0xdbe4eb) };
+const specularColor = { type: 'c', value: new THREE.Color(0xffffff) };
 const lightColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
 const toonColor = { type: 'c', value: new THREE.Color(0.88, 1.0, 1.0) };
 const toonColor2 = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
@@ -54,8 +56,16 @@ const sphereMaterial = new THREE.ShaderMaterial({
 const floorMaterial = new THREE.ShaderMaterial({
   uniforms: {
     colorMap: colorMap,
+    normalMap: normalMap
   }
 });
+
+// const floorMaterial = new THREE.MeshPhongMaterial(
+//     {
+//       // demo
+//       map: floorColorTexture,
+//       bumpMap: floorNormalTexture,
+//     } );
 
 const phongMaterial = new THREE.ShaderMaterial({
   uniforms: {
@@ -70,7 +80,7 @@ const phongMaterial = new THREE.ShaderMaterial({
   }
 });
 
-const anisotropicMaterial = new THREE.ShaderMaterial({
+const anisoMaterial = new THREE.ShaderMaterial({
   uniforms: {
     spherePosition: spherePosition,
     ambientColor: ambientColor,
@@ -115,8 +125,8 @@ const shaderFiles = [
   'glsl/squares.fs.glsl',
   'glsl/floor.vs.glsl',
   'glsl/floor.fs.glsl',
-  'glsl/anisotropic.vs.glsl',
-  'glsl/anisotropic.fs.glsl',
+  'glsl/aniso.vs.glsl',
+  'glsl/aniso.fs.glsl',
 ];
 
 new THREE.SourceLoader().load(shaderFiles, function (shaders) {
@@ -129,8 +139,8 @@ new THREE.SourceLoader().load(shaderFiles, function (shaders) {
   toonMaterial.vertexShader = shaders['glsl/toon.vs.glsl'];
   toonMaterial.fragmentShader = shaders['glsl/toon.fs.glsl'];
 
-  anisotropicMaterial.vertexShader = shaders['glsl/anisotropic.vs.glsl'];
-  anisotropicMaterial.fragmentShader = shaders['glsl/anisotropic.fs.glsl'];
+  anisoMaterial.vertexShader = shaders['glsl/aniso.vs.glsl'];
+  anisoMaterial.fragmentShader = shaders['glsl/aniso.fs.glsl'];
 
   squaresMaterial.vertexShader = shaders['glsl/squares.vs.glsl'];
   squaresMaterial.fragmentShader = shaders['glsl/squares.fs.glsl'];
@@ -144,10 +154,10 @@ const shaders = {
   PHONG: { key: 0, material: phongMaterial },
   TOON: { key: 1, material: toonMaterial },
   SQUARES: { key: 2, material: squaresMaterial },
-  ANISO: { key: 3, material: anisotropicMaterial },
+  ANISO: { key: 3, material: anisoMaterial }
 };
 
-let mode = shaders.ANISO.key; // Default
+let mode = shaders.PHONG.key; // Default
 
 // Set up scenes
 let scenes = [];
