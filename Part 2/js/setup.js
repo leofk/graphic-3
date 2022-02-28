@@ -18,7 +18,7 @@
 
     // Construct a THREEjs renderer from the canvas and context.
     const renderer = new THREE.WebGLRenderer({ canvas, context });
-    renderer.setClearColor(0X80CEE1); // blue background colour
+    renderer.setClearColor(0x000000); // blue background colour
 
     return {
         renderer,

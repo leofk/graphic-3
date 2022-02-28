@@ -22,8 +22,8 @@ floorNormalTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 // Uniforms - Pass these into the appropriate vertex and fragment shader files
 const colorMap = { type: 'sampler2D', value: floorColorTexture };
-const gradColor = { type: 'c', value: new THREE.Color(0xff70ff) };
-const gradColor2 = { type: 'c', value: new THREE.Color(0xFFCB37) };
+const gradColor = { type: 'c', value: new THREE.Color(0xff6219) }; // outer color
+const gradColor2 = { type: 'c', value: new THREE.Color(0xffcb30) }; // inner color
 
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
 const tangentDirection = { type: 'v3', value: new THREE.Vector3(0.5, 0.0, 1.0) };
@@ -32,9 +32,12 @@ const ambientColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
 const diffuseColor = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
 const specularColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
 const lightColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
-const toonColor = { type: 'c', value: new THREE.Color(0.88, 1.0, 1.0) };
-const toonColor2 = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
-const outlineColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
+// const toonColor = { type: 'c', value: new THREE.Color(0.88, 1.0, 1.0) };
+// const toonColor2 = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
+// const outlineColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
+const toonColor = { type: 'c', value: new THREE.Color(0xffcb30) }; // outer color
+const toonColor2 = { type: 'c', value: new THREE.Color(0xff6219) }; // inner color
+const outlineColor = { type: 'c', value: new THREE.Color(0x000000) };
 
 const kAmbient = { type: "f", value: 0.3 };
 const kDiffuse = { type: "f", value: 0.6 };

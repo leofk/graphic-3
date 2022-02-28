@@ -35,7 +35,8 @@ void main() {
     // Use a reasonable value as the threshold for the silhouette thickness
     // (i.e. proximity to edge).
 
-    if (fresnel < 0.35) out_Toon = outlineColor;
+    float epsilon = 0.4;
+    if (fresnel < epsilon) out_Toon = outlineColor;
 
     gl_FragColor = vec4(out_Toon, 1.0);
 }

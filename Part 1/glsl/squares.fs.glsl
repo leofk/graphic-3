@@ -16,7 +16,7 @@ void main() {
     float intensity = dot(interpolatedNormal, lightDirection);
 
     int divisor = 8;
-    int gridPosX = int(vertexPosition.x * 100.0) % divisor;
+    int gridPosX = int((vertexPosition.x + ticks / 30.0) * 100.0) % divisor;
     int gridPosY = int((vertexPosition.y + ticks / 15.0) * 100.0) % divisor;
     int gridPosZ = int(vertexPosition.z * 100.0) % divisor;
 

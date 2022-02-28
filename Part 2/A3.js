@@ -12,7 +12,7 @@ const { renderer, canvas } = setup();
 /////////////////////////////////
 
 // Load floor textures
-const floorColorTexture = new THREE.TextureLoader().load('texture/color.jpg');
+const floorColorTexture = new THREE.TextureLoader().load('texture/concrete.jpg');
 floorColorTexture.minFilter = THREE.LinearFilter;
 floorColorTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
@@ -24,8 +24,8 @@ floorNormalTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 const colorMap = { type: 't', value: floorColorTexture };
 const normalMap = { type: 't', value: floorNormalTexture };
 
-const gradColor = { type: 'c', value: new THREE.Color(0xff70ff) };
-const gradColor2 = { type: 'c', value: new THREE.Color(0xFFCB37) };
+const gradColor = { type: 'c', value: new THREE.Color(0xff6219) }; // outer color
+const gradColor2 = { type: 'c', value: new THREE.Color(0xffcb30) }; // inner color
 
 const spherePosition = { type: 'v3', value: new THREE.Vector3(0.0, 0.0, 0.0) };
 const tangentDirection = { type: 'v3', value: new THREE.Vector3(0.5, 0.0, 1.0) };
@@ -34,17 +34,15 @@ const ambientColor = { type: 'c', value: new THREE.Color(0x575657) };
 const diffuseColor = { type: 'c', value: new THREE.Color(0xdbe4eb) };
 const specularColor = { type: 'c', value: new THREE.Color(0xffffff) };
 const lightColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
-const toonColor = { type: 'c', value: new THREE.Color(0.88, 1.0, 1.0) };
-const toonColor2 = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
-const outlineColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
+const toonColor = { type: 'c', value: new THREE.Color(0xffcb30) }; // outer color
+const toonColor2 = { type: 'c', value: new THREE.Color(0xff6219) }; // inner color
+const outlineColor = { type: 'c', value: new THREE.Color(0x000000) };
 
 const kAmbient = { type: "f", value: 0.3 };
 const kDiffuse = { type: "f", value: 0.6 };
 const kSpecular = { type: "f", value: 1.0 };
 const shininess = { type: "f", value: 10.0 };
 const ticks = { type: "f", value: 0.0 };
-
-const sphereLight = new THREE.PointLight(0xffffff, 1, 300);
 
 // Shader materials
 const sphereMaterial = new THREE.ShaderMaterial({
@@ -59,13 +57,6 @@ const floorMaterial = new THREE.ShaderMaterial({
     normalMap: normalMap
   }
 });
-
-// const floorMaterial = new THREE.MeshPhongMaterial(
-//     {
-//       // demo
-//       map: floorColorTexture,
-//       bumpMap: floorNormalTexture,
-//     } );
 
 const phongMaterial = new THREE.ShaderMaterial({
   uniforms: {
@@ -149,80 +140,90 @@ new THREE.SourceLoader().load(shaderFiles, function (shaders) {
   floorMaterial.fragmentShader = shaders['glsl/floor.fs.glsl'];
 });
 
-// Define the shader modes
-const shaders = {
-  PHONG: { key: 0, material: phongMaterial },
-  TOON: { key: 1, material: toonMaterial },
-  SQUARES: { key: 2, material: squaresMaterial },
-  ANISO: { key: 3, material: anisoMaterial }
-};
-
-let mode = shaders.PHONG.key; // Default
-
 // Set up scenes
 let scenes = [];
-for (let shader of Object.values(shaders)) {
-  // Create the scene
-  const { scene, camera, worldFrame } = createScene(canvas);
+const { scene, camera, worldFrame } = createScene(canvas);
 
-  // Create the main sphere geometry (light source)
-  // https://threejs.org/docs/#api/en/geometries/SphereGeometry
-  const sphereGeometry = new THREE.SphereGeometry(1.0, 32.0, 32.0);
-  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-  sphere.position.set(0.0, 1.5, 0.0);
-  sphere.parent = worldFrame;
-  scene.add(sphere);
+
+const sphereGeometry = new THREE.SphereGeometry(1.0, 32.0, 32.0);
+const sphere = new THREE.Mesh(sphereGeometry);
+sphere.position.set(0.0, 20.0, 0.0);
+
+scene.add(sphere);
+
+const sphereLight = new THREE.PointLight(0xffffff, 1, 100);
+sphereLight.position.set(0.0, 20.0, 0.0);
+spherePosition.value.set(0.0, 20.0, 0.0);
+scene.add(sphereLight);
+//
+// const sphereLight = new THREE.PointLight(0xffffff, 1, 300);
+// scene.add((sphereLight);
+//
+//   // Create the main sphere geometry (light source)
+//   // https://threejs.org/docs/#api/en/geometries/SphereGeometry
+//   const sphereGeometry = new THREE.SphereGeometry(1.0, 32.0, 32.0);
+//   const sphere = new THREE.Mesh(sphereGeometry);
+//   sphere.position.set(0.0, 20.0, 0.0);
+//   sphereLight.position.set(sphere.position.x, sphere.position.y, sphere.position.z);
+//   sphere.parent = worldFrame;
+//   scene.add(sphere);
 
   // Look at the definition of loadOBJ to familiarize yourself with
   // how each parameter affects the loaded object.
-  loadAndPlaceOBJ('obj/armadillo.obj', shader.material, function (armadillo) {
-    armadillo.position.set(0.0, 0.0, -10.0);
+loadAndPlaceOBJ('obj/armadillo.obj', toonMaterial, function (armadillo) {
+    armadillo.position.set(0.0, -2.0, -10.0);
     armadillo.rotation.y = Math.PI;
     armadillo.scale.set(10, 10, 10);
     armadillo.parent = worldFrame;
     scene.add(armadillo);
   });
+
+loadAndPlaceOBJ('obj/lamp.obj', phongMaterial, function (lamp) {
+  lamp.position.set(0.0, -10.0, 0.0);
+  lamp.rotation.y = Math.PI;
+  lamp.scale.set(10, 10, 10);
+  lamp.parent = worldFrame;
+  scene.add(lamp);
+});
   
-  const terrainGeometry = new THREE.BoxGeometry(50, 50, 5);
-  const terrain = new THREE.Mesh(terrainGeometry, floorMaterial);
-  terrain.position.y = -10.4;
-  terrain.rotation.set(- Math.PI / 2, 0, 0);
-  scene.add(terrain);
+
+
+// Diffuse texture map (this defines the main colors of the floor)
+const floorDiff = new THREE.TextureLoader().load('images/a_color.jpg');
+// Ambient occlusion map
+const floorAo = new THREE.TextureLoader().load('images/a_occ.jpg');
+// Displacement map
+const floorDisp = new THREE.TextureLoader().load('images/a_disp.jpg');
+// Normal map
+const floorNorm = new THREE.TextureLoader().load('images/a_normal.jpg');
+// Roughness map
+const floorRoughness = new THREE.TextureLoader().load('images/a_rough.jpg');
+
+const groundMaterial = new THREE.MeshStandardMaterial({
+  map: floorDiff,
+  aoMap: floorAo,
+  displacementMap: floorDisp,
+  normalMap: floorNorm,
+  roughnessMap: floorRoughness,
+  side: THREE.DoubleSide
+});
+
+const terrainGeometry = new THREE.BoxGeometry(200, 200, 2);
+const terrain = new THREE.Mesh(terrainGeometry, groundMaterial);
+terrain.scale.set(0.5,0.5,0.5);
+terrain.position.y = -10.4;
+terrain.rotation.set(- Math.PI / 2, 0, 0);
+scene.add(terrain);
   
   // scene.add(sphereLight);
   scenes.push({ scene, camera });
-}
+
 
 
 // Listen to keyboard events.
 const keyboard = new THREEx.KeyboardState();
 function checkKeyboard() {
-  if (keyboard.pressed("1"))
-    mode = shaders.PHONG.key;
-  else if (keyboard.pressed("2"))
-    mode = shaders.TOON.key;
-  else if (keyboard.pressed("3"))
-    mode = shaders.SQUARES.key;
-  else if (keyboard.pressed("4"))
-    mode = shaders.ANISO.key;
-
-  if (keyboard.pressed("W"))
-    spherePosition.value.z -= 0.3;
-  else if (keyboard.pressed("S"))
-    spherePosition.value.z += 0.3;
-
-  if (keyboard.pressed("A"))
-    spherePosition.value.x -= 0.3;
-  else if (keyboard.pressed("D"))
-    spherePosition.value.x += 0.3;
-
-  if (keyboard.pressed("E"))
-    spherePosition.value.y -= 0.3;
-  else if (keyboard.pressed("Q"))
-    spherePosition.value.y += 0.3;
-
-    
-  sphereLight.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
+  // sphereLight.position.set(spherePosition.value.x, spherePosition.value.y, spherePosition.value.z);
 
   // The following tells three.js that some uniforms might have changed
   sphereMaterial.needsUpdate = true;
@@ -241,7 +242,7 @@ function update() {
 
   // Requests the next update call, this creates a loop
   requestAnimationFrame(update);
-  const { scene, camera } = scenes[mode];
+  // const { scene, camera } = scenes[mode];
   renderer.render(scene, camera);
 }
 
