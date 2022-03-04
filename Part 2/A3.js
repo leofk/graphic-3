@@ -147,15 +147,16 @@ const { scene, camera, worldFrame } = createScene(canvas);
 
 const sphereGeometry = new THREE.SphereGeometry(1.0, 32.0, 32.0);
 const sphere = new THREE.Mesh(sphereGeometry);
-sphere.position.set(0.0, 20.0, 0.0);
+spherePosition.value.set(0.0, 5.0, -10.0);
 
 scene.add(sphere);
 
-const sphereLight = new THREE.PointLight(0xffffff, 1, 100);
-sphereLight.position.set(0.0, 20.0, 0.0);
-spherePosition.value.set(0.0, 20.0, 0.0);
+const sphereLight = new THREE.PointLight(0xffffff, 1, 1000);
+sphereLight.position.set(0.0, 7.0, -10.0);
+spherePosition.value.set(0.0, 5.0, -10.0);
 scene.add(sphereLight);
-//
+
+
 // const sphereLight = new THREE.PointLight(0xffffff, 1, 300);
 // scene.add((sphereLight);
 //
@@ -170,34 +171,58 @@ scene.add(sphereLight);
 
   // Look at the definition of loadOBJ to familiarize yourself with
   // how each parameter affects the loaded object.
-loadAndPlaceOBJ('obj/armadillo.obj', toonMaterial, function (armadillo) {
-    armadillo.position.set(0.0, -2.0, -10.0);
-    armadillo.rotation.y = Math.PI;
-    armadillo.scale.set(10, 10, 10);
-    armadillo.parent = worldFrame;
-    scene.add(armadillo);
-  });
+// loadAndPlaceOBJ('obj/armadillo.obj', phongMaterial , function (armadillo) {
+//     armadillo.position.set(0.0, -2.0, -10.0);
+//     armadillo.rotation.y = Math.PI;
+//     armadillo.scale.set(10, 10, 10);
+//     armadillo.parent = worldFrame;
+//     scene.add(armadillo);
+//   });
 
-loadAndPlaceOBJ('obj/lamp.obj', phongMaterial, function (lamp) {
-  lamp.position.set(0.0, -10.0, 0.0);
-  lamp.rotation.y = Math.PI;
-  lamp.scale.set(10, 10, 10);
-  lamp.parent = worldFrame;
-  scene.add(lamp);
+// loadAndPlaceOBJ('obj/lamp.obj', phongMaterial, function (lamp) {
+//   lamp.position.set(0.0, -10.0, 0.0);
+//   lamp.rotation.y = Math.PI;
+//   lamp.scale.set(10, 10, 10);
+//   lamp.parent = worldFrame;
+//   scene.add(lamp);
+// });
+
+
+// Image map / base map / diffuse map
+const teddyBase = new THREE.TextureLoader().load('images/teddy/Teddy_BaseColor.png');
+// Normal Map
+const teddyNormal = new THREE.TextureLoader().load('images/teddy/Teddy_Normal.png');
+// AO, roughness, and metalness map
+const teddyOccRoughMetal = new THREE.TextureLoader().load('images/teddy/Teddy_OcclusionRoughnessMetallic.png');
+
+const teddyMaterial = new THREE.MeshStandardMaterial({
+  map: teddyBase,
+  normalMap: teddyNormal,
+  aoMap: teddyOccRoughMetal,
+  metalnessMap: teddyOccRoughMetal,
+  roughnessMap: teddyOccRoughMetal,
+  //side: THREE.DoubleSide
 });
-  
+
+loadAndPlaceOBJ('obj/Teddy.obj', teddyMaterial, function (teddy) {
+  teddy.position.set(0.0, 0.0, -20.0);
+  // teddy.rotation.y = Math.PI;
+  // teddy.scale.set(1, 1, 1);
+  teddy.parent = worldFrame;
+  scene.add(teddy);
+});
 
 
 // Diffuse texture map (this defines the main colors of the floor)
-const floorDiff = new THREE.TextureLoader().load('images/a_color.jpg');
+const floorDiff = new THREE.TextureLoader().load('images/grass/Grass_003_COLOR.jpg');
 // Ambient occlusion map
-const floorAo = new THREE.TextureLoader().load('images/a_occ.jpg');
+const floorAo = new THREE.TextureLoader().load('images/grass/Grass_003_OCC.jpg');
 // Displacement map
-const floorDisp = new THREE.TextureLoader().load('images/a_disp.jpg');
+const floorDisp = new THREE.TextureLoader().load('images/grass/Grass_003_DISP.jpg');
 // Normal map
-const floorNorm = new THREE.TextureLoader().load('images/a_normal.jpg');
+const floorNorm = new THREE.TextureLoader().load('images/grass/Grass_003_NRM.jpg');
 // Roughness map
-const floorRoughness = new THREE.TextureLoader().load('images/a_rough.jpg');
+const floorRoughness = new THREE.TextureLoader().load('images/grass/Grass_003_ROUGH.jpg');
 
 const groundMaterial = new THREE.MeshStandardMaterial({
   map: floorDiff,
@@ -215,10 +240,8 @@ terrain.position.y = -10.4;
 terrain.rotation.set(- Math.PI / 2, 0, 0);
 scene.add(terrain);
   
-  // scene.add(sphereLight);
-  scenes.push({ scene, camera });
-
-
+// scene.add(sphereLight);
+scenes.push({ scene, camera });
 
 // Listen to keyboard events.
 const keyboard = new THREEx.KeyboardState();
