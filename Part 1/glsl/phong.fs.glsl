@@ -15,9 +15,9 @@ uniform vec3 spherePosition;
 
 // The value of our shared variable is given as the interpolation between normals computed in the vertex shader
 // below we can see the shared variable we passed from the vertex shader using the 'in' classifier
-in vec3 interpolatedNormal;
-in vec3 viewPosition;
-in vec3 worldPosition;
+in vec3 interpolatedNormal; // model frame
+in vec3 viewPosition;  // world frame
+in vec3 worldPosition; // vPosition in world frame
 
 
 vec3 calculateAmbient(){
@@ -32,16 +32,17 @@ vec3 calculateDiffuse(vec3 normal, vec3 lightDirection){
 vec3 calculateSpecular(vec3 normal, vec3 lightDirection){
     // HINT: Make sure to use the Jim Blinn's modification to the Phong Model (Blinn-Phong reflectance)
     // See textbook, Section 14.3
-    vec3 halfway = normalize(lightDirection + viewPosition);
+    vec3 viewDirection = normalize(viewPosition);
+    vec3 halfway = normalize(viewDirection + lightDirection);
     float specular = pow(max(0.0, dot(halfway, normal)), shininess);
     return specularColor * kSpecular * specular;
 }
 
 void main() {
 
-    vec3 normal = normalize(mat3(transpose(inverse(modelMatrix))) * interpolatedNormal);
+    vec3 normal = normalize(mat3(transpose(inverse(modelMatrix))) * interpolatedNormal); // model frame
 
-    vec3 lightDirection = normalize(spherePosition - worldPosition);
+    vec3 lightDirection = normalize(spherePosition - worldPosition); // toLight in world frame
 
     // HINT: Implement the following 3 functions
     vec3 out_Ambient = calculateAmbient();

@@ -8,11 +8,11 @@ out vec3 interpolatedNormal;
 
 void main() {
     
-    viewPosition = vec3(inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0));
+    viewPosition = vec3(inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)); // world frame
     
-    vec3 modelPosition = vec3(modelMatrix * vec4(position, 1.0));
+    vec3 modelPosition = vec3(modelMatrix * vec4(position, 1.0)); // world frame
 
-    worldPosition = vec3(modelMatrix * vec4(position, 1.0));
+    worldPosition = vec3(modelMatrix * vec4(position, 1.0));  // world frame
     
     interpolatedNormal = normal;
 
