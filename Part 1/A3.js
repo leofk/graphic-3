@@ -35,9 +35,9 @@ const lightColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
 // const toonColor = { type: 'c', value: new THREE.Color(0.88, 1.0, 1.0) };
 // const toonColor2 = { type: 'c', value: new THREE.Color(0.0, 1.0, 1.0) };
 // const outlineColor = { type: 'c', value: new THREE.Color(0.0, 0.0, 1.0) };
-const toonColor = { type: 'c', value: new THREE.Color(0xffcb30) }; // outer color
-const toonColor2 = { type: 'c', value: new THREE.Color(0xff6219) }; // inner color
-const outlineColor = { type: 'c', value: new THREE.Color(0x000000) };
+const toonColor = { type: 'c', value: new THREE.Color(0xffcb30) }; // inner color
+const toonColor2 = { type: 'c', value: new THREE.Color(0xff6219) }; // outer color
+const outlineColor = { type: 'c', value: new THREE.Color("black") };
 
 const kAmbient = { type: "f", value: 0.3 };
 const kDiffuse = { type: "f", value: 0.6 };

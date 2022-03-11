@@ -19,16 +19,19 @@ void main() {
     // built-in `ceil` function that you could use to determine the nearest
     // light intensity range.
 
-    if (intensity > 0.66) intensity = 0.0;
-    else if (intensity > 0.33) intensity = 0.5;
-    else intensity = 1.0;
+    float temp = 3.0;
+    intensity = ceil(intensity * temp) / temp;
+
+//    if (intensity > 0.66) intensity = 0.0;
+//    else if (intensity > 0.33) intensity = 0.5;
+//    else intensity = 1.0;
 
     // HINT: You should use two tones of colors here; `toonColor` is a cyan
     // color for brighter areas and `toonColor2` is a blue for darker areas.
     // Use the light intensity to blend the two colors, there should be 3 distinct
     // colour regions
 
-    vec3 out_Toon = mix(toonColor, toonColor2, intensity);
+    vec3 out_Toon = mix(toonColor, toonColor2, 1.0-intensity);
 
     // HINT: To achieve the toon silhouette outline, set a dark fragment color
     // if the current fragment is located near the edge of the 3D model.

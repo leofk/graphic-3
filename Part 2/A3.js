@@ -34,8 +34,8 @@ const ambientColor = { type: 'c', value: new THREE.Color(0x575657) };
 const diffuseColor = { type: 'c', value: new THREE.Color(0xdbe4eb) };
 const specularColor = { type: 'c', value: new THREE.Color(0xffffff) };
 const lightColor = { type: 'c', value: new THREE.Color(1.0, 1.0, 1.0) };
-const toonColor = { type: 'c', value: new THREE.Color(0xffcb30) }; // outer color
-const toonColor2 = { type: 'c', value: new THREE.Color(0xff6219) }; // inner color
+const toonColor = { type: 'c', value: new THREE.Color(0xff6219) }; // outer color
+const toonColor2 = { type: 'c', value: new THREE.Color(0xffcb30) }; // inner color
 const outlineColor = { type: 'c', value: new THREE.Color(0x000000) };
 
 const kAmbient = { type: "f", value: 0.3 };
